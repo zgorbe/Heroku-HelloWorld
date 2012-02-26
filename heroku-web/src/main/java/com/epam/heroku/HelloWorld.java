@@ -11,12 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 public class HelloWorld extends HttpServlet {
-	private static Logger logger = Logger.getLogger(HelloWorld.class);
+	private static final Logger LOGGER = Logger.getLogger(HelloWorld.class);
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
-		logger.info("GET for /hello");
+		LOGGER.info("GET for /hello");
 		
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/hello.jsp");
 		rd.forward(request, response);
