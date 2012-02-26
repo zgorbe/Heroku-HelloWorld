@@ -1,0 +1,54 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.epam.heroku</groupId>
+	<version>1.0</version>
+	<name>Hello Worker</name>
+	<artifactId>hello.worker</artifactId>
+
+	<parent>
+		<groupId>com.epam.heroku</groupId>
+		<artifactId>hello</artifactId>
+		<version>1.0</version>
+	</parent>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources/common</directory>
+			</resource>
+		</resources>
+  
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>appassembler-maven-plugin</artifactId>
+				<version>1.1.1</version>
+				<configuration>
+					<assembleDirectory>target</assembleDirectory>
+					<programs>
+						<program>
+							<mainClass>com.epam.heroku.OneOffProcess</mainClass>
+							<name>oneoffprocess</name>
+						</program>
+						<program>
+							<mainClass>com.epam.heroku.WorkerProcess</mainClass>
+							<name>workerprocess</name>
+						</program>
+					</programs>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>assemble</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+		<finalName>helloworker</finalName>
+	</build>
+
+</project>

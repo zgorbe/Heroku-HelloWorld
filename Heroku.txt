@@ -1,0 +1,187 @@
+Cloud Platform as a Service
+(Trust&Manage)
+Led the way for a multi-language PaaS
+Ruby, Node.js, Clojure, Java, Python, and Scala
+
+   * Infrastructure as a Service (IaaS): The provider gives you
+on-demand access to compute infrastructure, with console access (RDP
+or SSH) to a server that you completely own. Application
+administrators can request as many servers as necessary to meet the
+scalability needs of their application. IaaS is typified by the Amazon
+Web Services cloud.
+   * Platform as a Service (PaaS): In this case the provider gives
+you on-demand access to infrastructure, but does not give access to
+the underlying console. Programmers can request as much compute
+capacity as is required to run their application. The underlying
+technology will distribute and run the application on as many servers
+as is required. Examples: Microsoft Azure, Google AppEngine, Amazon
+Elasti .
+
+
+History
+Since 2007 June
+In November 2010, Heroku announced a partnership with Facebook,[9]
+creating the Heroku Facebook App Package [10] which enable
+companies—large and small—to quickly and easily create Facebook apps
+reliably
+
+Apps are created from one of four templates, based on the language
+choice you make at app creation time: Ruby, Node.js, Python, or PHP.
+
+As part of this launch, we're including partial support for two new
+languages: Python and PHP. For now, these languages are only supported
+for apps created through the Facebook integration.
+
+December 8, 2010, Salesforce.com entered into a definitive agreement
+to acquire Heroku for a reported $212 million
+
+How it works
+http://www.heroku.com/how
+Deploy - Git push
+Control Surfaces
+Add-ons and config vars
+Dyno manifold
+Each dyno is completely isolated (using LXC OS-level virtualization),
+providing a secure and performance-consistent environment.
+512MB ram, 1/4 CPU capacity?, ephemeral file system
+
+Stacks
+Aspen
+   Operating System: Debian 4.0, Ruby Version: MRI 1.8.6, App Server: Thin, Web Server: Nginx 0.6.32
+Bamboo
+Bamboo is a deployment stack on Heroku, and is an alternative to
+Aspen. It runs on Debian 5.0 (lenny) and offers three Ruby VMs: Ruby Enterprise Edition 1.8.7, MRI 1.9.1, and MRI 1.9.2.
+
+Cedar
+Supported Languages and Frameworks
+Ruby
+   Rails 3
+   Ruby/Sinatra
+
+Node.js
+   Node.js/Express
+
+Clojure
+   Clojure/Ring
+
+Java
+   Java
+   Spring MVC
+   Play!
+
+Python
+   Python/Django
+
+Scala
+   Scala
+
+Stack Software Versions
+
+   * OS: Ubuntu Server 10.04 (Lucid Lynx), Ruby: MRI 1.9.2, Bundler: 1.1pre5, Node.js: 0.4.7, NPM: 1.0.6, JVM: OpenJDK 6
+
+Dynos and dyno manifold   
+- Fully-isolated, erosion-resistent processes running on the dyno manifold.
+- Dynos receive web requests from routing, connect to app resources via environment variables, and write output to Logplex. 
+- Number of dynos allocated to an app directly affects the request throughput.
+- Own ephemeral filesystem, with a fresh copy of the most recently deployed code.
+- Each dyno gets 512MB of memory to operate within.
+- Apps that have only 1 web dyno will be idled out after 1 hour of inactivity. 
+- If a dyno crashes, the dyno manifold will immediately attempt to restart it.
+- Dynos cost $0.05 per hour, prorated to the second. 
+- Each application receives 750 free dyno hours per month.
+
+Slugs
+- Slugs are compressed and pre-packaged copies of your application 
+- Optimized for fast distribution across the dyno manifold
+- When you git push to Heroku, your code is received by the slug compiler which transforms your repository into a slug.
+- Scaling an application then downloads and expands the slug to a dyno for execution.
+- Any slug under 15MB is small; 30MB is average; and 50MB or above is weighty.
+   
+Process Model
+- A process type is the prototype from which one or more processes are instantiated.
+- Web processes
+- Workers
+- One off admin processes
+- Procfile, where you define your web and worker processes
+
+Heroku Command Line and Web Console
+Toolbelt: https://toolbelt.heroku.com/
+Exploring and Deploying HelloWorld
+
+Java
+- OpenJDK 6, Maven 3.0.3
+- Deployment is done by pushing a whole project of source assets to Heroku using git. 
+- The project must use Maven as the build system. When you push the project, Heroku will execute Maven to build the artifacts.
+- Java applications do not run in any Java container at all. 
+- Embedded Tomcat (version 7.0.x) and embedded Jetty (version 7.4.x) have been tested with Heroku.
+- Procfile (web with jetty runner)
+web: java $JAVA_OPTS -jar target/dependency/jetty-runner.jar --port $PORT target/*.war
+worker: sh target/bin/workerprocess
+
+Platform Constraints:
+- Your application source code plus built artifacts must be less than 100MB.
+- Many process types in a single application, but only one of those types can be a web process that receives requests from the routing layer.
+- The web process must listen on one and only one port. The port must be the one specified in the $PORT variable. 
+- The Heroku routing infrastructure does not support "sticky sessions" in Cedar Stack.
+- Design the your app to anticipate restarts without losing data or affecting the user experience in a material way.
+- Your application must boot in one minute or less.
+- You can increase the memory setting for your application from the default specified in the JAVA_OPTS config variable. (heroku config)
+
+Database:
+- The shared plan is suitable for development and staging applications. It runs PostgreSQL 8.3
+- The dedicated plans are suitable for production scale applications. 
+- In addition, the dedicated databases offer a number of advantages, including direct access (via psql or any native postgresql library), stored procedures, and PostgreSQL 9 support.
+- heroku config -> DATABASE_URL
+
+Connecting to DB:
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" />
+  <bean class="java.net.URI" id="dbUrl">
+    <constructor-arg value="${DATABASE_URL}"/>
+  </bean>
+
+  <bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" id="dataSource">
+    <property name="driverClassName" value="${database.driverClassName}"/>
+    <property name="url" value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + @dbUrl.getPath() }"/>
+    <property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
+    <property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
+	</bean>
+
+  DB export-import:
+- import: heroku db:push
+- export: heroku db:pull
+
+DB Backups:
+- Add-ons - PG Backups 
+
+
+Scaling
+- From CLI: heroku scale web=2 worker=4 clock=1
+- screenshot: http://devcenter.heroku.com/articles/process-model
+...
+Refused requests will get the H11 (Backlog too deep) error message.
+AutoScale: 
+http://hirefireapp.com/
+http://www.heroscale.com/
+
+Add-ons
+- Heroku REST API for add-on providers
+- Managing from CLI or web console
+- Billing details needed for them
+
+
+Heroku claims to offer the most NoSQL Add-on Solutions in the market
+today using a single click. Pioneering NoSQL companies available
+include Cloudant, Membase, MongoDB and Redis,
+
+
+Competitors
+
+   * Amazon Elastic Beanstalk http://aws.amazon.com/elasticbeanstalk/ (beta)
+   * Cloud Foundry http://www.cloudfoundry.com/ (beta)
+   * Google App Engine http://code.google.com/appengine/
+   * Microsoft Azure Services Platform http://www.windowsazure.com/
+   * Jelastic Java PaaS http://jelastic.com/ (beta)
+   
+   
+More documentation:
+http://devcenter.heroku.com
