@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 
@@ -16,7 +17,7 @@ public class HelloWorld extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
-		LOGGER.info("GET for /hello");
+		LOGGER.info("GET for /hello - " + new Date());
 		
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/hello.jsp");
 		rd.forward(request, response);
