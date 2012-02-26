@@ -2,10 +2,14 @@
 
 Build the project with
 
-    $ mvn clean package
+    $ mvn clean install
 
 # Run
 
 Now you can run your webapp with:
 
-java $JAVA_OPTS -jar target/dependency/jetty-runner.jar --port $PORT target/*.war
+java -jar heroku-web/target/dependency/jetty-runner.jar heroku-web/target/*.war
+
+You can run the worker process with:
+
+heroku-worker/target/bin/workerprocess
