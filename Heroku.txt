@@ -5,10 +5,8 @@ Ruby, Node.js, Clojure, Java, Python, and Scala
 
    * Infrastructure as a Service (IaaS): The provider gives you
 on-demand access to compute infrastructure, with console access (RDP
-or SSH) to a server that you completely own. Application
-administrators can request as many servers as necessary to meet the
-scalability needs of their application. IaaS is typified by the Amazon
-Web Services cloud.
+or SSH) to a server that you completely own. Example: Amazon EC2,
+Rackspace
    * Platform as a Service (PaaS): In this case the provider gives
 you on-demand access to infrastructure, but does not give access to
 the underlying console. Programmers can request as much compute
@@ -22,7 +20,7 @@ History
 Since 2007 June
 In November 2010, Heroku announced a partnership with Facebook,[9]
 creating the Heroku Facebook App Package [10] which enable
-companies—large and small—to quickly and easily create Facebook apps
+companiesï¿½large and smallï¿½to quickly and easily create Facebook apps
 reliably
 
 Apps are created from one of four templates, based on the language
@@ -107,13 +105,16 @@ Process Model
 Heroku Command Line and Web Console
 Toolbelt: https://toolbelt.heroku.com/
 Exploring and Deploying HelloWorld
+Using heroku commandline
 
 Java
 - OpenJDK 6, Maven 3.0.3
 - Deployment is done by pushing a whole project of source assets to Heroku using git. 
 - The project must use Maven as the build system. When you push the project, Heroku will execute Maven to build the artifacts.
-- Java applications do not run in any Java container at all. 
+- Java applications do not run in any Java container at all.
+- Any application server can be used, that can be embedded and defined with a Maven dependeny
 - Embedded Tomcat (version 7.0.x) and embedded Jetty (version 7.4.x) have been tested with Heroku.
+- Maven - appassembler-maven-plugin, jetty runner for Jetty
 - Procfile (web with jetty runner)
 web: java $JAVA_OPTS -jar target/dependency/jetty-runner.jar --port $PORT target/*.war
 worker: sh target/bin/workerprocess
@@ -134,7 +135,7 @@ Database:
 - heroku config -> DATABASE_URL
 
 Connecting to DB:
-	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" />
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" />
   <bean class="java.net.URI" id="dbUrl">
     <constructor-arg value="${DATABASE_URL}"/>
   </bean>
@@ -146,7 +147,7 @@ Connecting to DB:
     <property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
 	</bean>
 
-  DB export-import:
+DB export-import:
 - import: heroku db:push
 - export: heroku db:pull
 
