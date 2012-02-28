@@ -14,7 +14,7 @@ public class WorkerProcess {
 		while (true) {
 			try {
 				executeJob();
-				Thread.sleep(60000);
+				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				logger.error("Exception: " + e);
 			}
