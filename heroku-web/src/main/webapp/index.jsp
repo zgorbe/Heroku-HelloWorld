@@ -7,6 +7,6 @@
 		<title>Heroku - Hello World</title>
 	</head>
 	<body>
-		Welcome
+		Welcome to Heroku!
 	</body>
 </html>

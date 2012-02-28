@@ -4,10 +4,10 @@ import org.apache.log4j.Logger;
 
 public class WorkerProcess {
 
-	private static Logger logger = Logger.getLogger(WorkerProcess.class);
+	private static final Logger LOGGER = Logger.getLogger(WorkerProcess.class);
 
 	private static void executeJob() {
-		logger.info("Executing job...");
+		LOGGER.info("Executing job...");
 	}
 	
 	public static void main(String[] args) {
@@ -16,7 +16,7 @@ public class WorkerProcess {
 				executeJob();
 				Thread.sleep(10000);
 			} catch (InterruptedException e) {
-				logger.error("Exception: " + e);
+				LOGGER.error("Exception: " + e);
 			}
 		}
 	}

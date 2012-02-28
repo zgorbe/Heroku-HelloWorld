@@ -4,9 +4,9 @@ import org.apache.log4j.Logger;
 
 public class OneOffProcess {
 	
-	private static Logger logger = Logger.getLogger(OneOffProcess.class);
+	private static final Logger LOGGER = Logger.getLogger(OneOffProcess.class);
 	
 	public static void main(String[] args) {
-		logger.info("OneOffProcess executed.");
+		LOGGER.info("OneOffProcess executed.");
 	}
 }

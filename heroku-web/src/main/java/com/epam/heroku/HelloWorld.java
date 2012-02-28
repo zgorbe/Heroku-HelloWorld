@@ -12,6 +12,7 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 
 public class HelloWorld extends HttpServlet {
+	
 	private static final Logger LOGGER = Logger.getLogger(HelloWorld.class);
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) 
