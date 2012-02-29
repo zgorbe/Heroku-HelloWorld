@@ -88,6 +88,14 @@ Dynos and dyno manifold
 - Dynos cost $0.05 per hour, prorated to the second. 
 - Each application receives 750 free dyno hours per month.
 
+Dyno features
+-Elasticity: The number of dynos allocated for your app can be increased or decreased at any time - without any server provisioning.
+-Intelligent routing: The routing mesh tracks the location of all web dynos and routes HTTP traffic to them accordingly.
+-Process management: Each dyno process is monitored for responsiveness. Misbehaving dynos are taken down and new dynos are launched in their place.
+-Distribution and redundancy: Dynos are distributed across a distributed execution environment known as the dyno manifold. An app configured with two web dynos is running two processes, as you’d expect, but each process is running in a separate physical location. If a machine goes down, your site stays up - even with only two dynos.
+-Isolation: Every dyno is completely isolated in its own subvirtualized container, with many benefits for security, resource guarantees, and overall robustness.
+
+
 Process Model
 - A process type is the prototype from which one or more processes are instantiated.
 - Web processes
